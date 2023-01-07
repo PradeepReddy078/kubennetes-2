@@ -2,10 +2,10 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ingress-externaldns-demo
+  name: app2ingress 
   annotations:
     # Load Balancer Name
-    alb.ingress.kubernetes.io/load-balancer-name: externaldns-ingress
+    alb.ingress.kubernetes.io/load-balancer-name: namedbasedvhost-ingress
     # Ingress Core Settings
     #kubernetes.io/ingress.class: "alb" (OLD INGRESS CLASS NOTATION - STILL WORKS BUT RECOMMENDED TO USE IngressClass Resource)
     alb.ingress.kubernetes.io/scheme: internet-facing
@@ -25,25 +25,16 @@ metadata:
     # SSL Redirect Setting
     alb.ingress.kubernetes.io/ssl-redirect: '443'
     # External DNS - For creating a Record Set in Route53
-    external-dns.alpha.kubernetes.io/hostname: dev1.devopssea.com 
+    # Ingress Groups
+    alb.ingress.kubernetes.io/group.name: myapps.web
+    alb.ingress.kubernetes.io/group.order: '2'    
 spec:
-  ingressClassName: my-aws-ingress-class   # Ingress Class                  
-  defaultBackend:
-    service:
-      name: app3-nginx-nodeport-service
-      port:
-        number: 80     
+  ingressClassName: my-aws-ingress-class   # Ingress Class 
   rules:
-    - http:
-        paths:      
-          - path: /app1
-            pathType: Prefix
-            backend:
-              service:
-                name: app1-nginx-nodeport-service
-                port: 
-                  number: 80
-          - path: /app2
+    - host: myapp2.devopssea.com
+      http:
+        paths:                  
+          - path: /
             pathType: Prefix
             backend:
               service:
@@ -51,9 +42,25 @@ spec:
                 port: 
                   number: 80
 
-# Important Note-1: In path based routing order is very important, if we are going to use  "/*", try to use it at the end of all rules.                                        
-                        
-# 1. If  "spec.ingressClassName: my-aws-ingress-class" not specified, will reference default ingress class on this kubernetes cluster
-# 2. Default Ingress class is nothing but for which ingress class we have the annotation `ingressclass.kubernetes.io/is-default-class: "true"`
-      
-    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

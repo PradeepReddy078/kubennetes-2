@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: app1-nginx
-          image: electrumlocaltesting/app1 
+          image: electrumlocaltesting/app1
           ports:
             - containerPort: 80
 ---
@@ -37,4 +37,3 @@ spec:
     - port: 80
       targetPort: 80
 
-   

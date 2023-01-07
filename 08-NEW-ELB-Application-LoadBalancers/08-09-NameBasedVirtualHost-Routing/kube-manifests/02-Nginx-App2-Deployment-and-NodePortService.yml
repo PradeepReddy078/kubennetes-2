@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: app2-nginx
-          image: stacksimplify/kube-nginxapp2:1.0.0
+          image: electrumlocaltesting/app2 
           ports:
             - containerPort: 80
 ---
@@ -28,7 +28,7 @@ metadata:
     app: app2-nginx
   annotations:
 #Important Note:  Need to add health check path annotations in service level if we are planning to use multiple targets in a load balancer
-    alb.ingress.kubernetes.io/healthcheck-path: /app2/index.html
+    alb.ingress.kubernetes.io/healthcheck-path: / 
 spec:
   type: NodePort
   selector:
